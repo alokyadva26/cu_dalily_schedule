@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CU Daily Schedule — Reconnecting</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(135deg, #0b0f19 0%, #1a1f2e 100%);
+      color: #f3f4f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 36px 32px;
+      max-width: 420px;
+      margin: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+    .icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      display: inline-block;
+      animation: pulse 2s infinite ease-in-out;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+    h2 {
+      margin: 0 0 10px 0;
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    p {
+      margin: 0 0 24px 0;
+      font-size: 14px;
+      color: #9ca3af;
+      line-height: 1.5;
+    }
+    .btn {
+      display: inline-block;
+      padding: 12px 28px;
+      background: #c8102e;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn:hover {
+      background: #a00d24;
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">📡</div>
+    <h2>Reconnecting to Server</h2>
+    <p>The connection to the schedule server was briefly interrupted. The application will resume as soon as the connection is restored.</p>
+    <button class="btn" onclick="window.parent ? window.parent.location.reload() : window.location.reload()">Reload Application</button>
+  </div>
+  <script>
+    window.addEventListener('online', () => {
+      setTimeout(() => {
+        if (window.parent) {
+          window.parent.location.reload();
+        } else {
+          window.location.reload();
+        }
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
