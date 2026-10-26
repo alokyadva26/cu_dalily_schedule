@@ -1,0 +1,28 @@
+# Maven Build Output
+target/
+*.class
+
+# Package Files
+*.jar
+*.war
+*.ear
+
+# Environment & Private Config Files
+.env
+.env.local
+config.properties
+
+# IDE & Editor Files
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store

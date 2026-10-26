@@ -1,0 +1,258 @@
+[
+  {
+    "day": "Monday",
+    "startTime": "09:30 AM",
+    "endTime": "10:20 AM",
+    "subject": "24CST-302..L::GP-All",
+    "faculty": "Sapna Aggarwal(E19088)",
+    "room": "Block-B1-517"
+  },
+  {
+    "day": "Monday",
+    "startTime": "10:20 AM",
+    "endTime": "11:10 AM",
+    "subject": "24CSH-301..L::GP-All",
+    "faculty": "Rajneet Kaur(E12892)",
+    "room": "Block-B1-517"
+  },
+  {
+    "day": "Monday",
+    "startTime": "11:10 AM",
+    "endTime": "12:00 PM",
+    "subject": "24CSP-305..P::GP-A",
+    "faculty": "Gitanjali(E16525)",
+    "room": "Block-B1-407"
+  },
+  {
+    "day": "Monday",
+    "startTime": "12:00 PM",
+    "endTime": "12:50 PM",
+    "subject": "24CSP-305..P::GP-A",
+    "faculty": "Gitanjali(E16525)",
+    "room": "Block-B1-407"
+  },
+  {
+    "day": "Monday",
+    "startTime": "01:40 PM",
+    "endTime": "02:30 PM",
+    "subject": "24CSH-318..L::GP-All",
+    "faculty": "Jaspreet Singh(E20651)",
+    "room": "Block-B1-313"
+  },
+  {
+    "day": "Monday",
+    "startTime": "02:30 PM",
+    "endTime": "03:20 PM",
+    "subject": "24SMT-341..T::GP-A",
+    "faculty": "Gagandeep Kaur Sidhu(E20755)",
+    "room": "Block-B1-505"
+  },
+  {
+    "day": "Tuesday",
+    "startTime": "09:30 AM",
+    "endTime": "10:20 AM",
+    "subject": "24CSP-305..P::GP-A",
+    "faculty": "Gitanjali(E16525)",
+    "room": "Block-B1-402"
+  },
+  {
+    "day": "Tuesday",
+    "startTime": "10:20 AM",
+    "endTime": "11:10 AM",
+    "subject": "24CSP-305..P::GP-A",
+    "faculty": "Gitanjali(E16525)",
+    "room": "Block-B1-402"
+  },
+  {
+    "day": "Tuesday",
+    "startTime": "11:10 AM",
+    "endTime": "12:00 PM",
+    "subject": "24CSH-301..L::GP-All",
+    "faculty": "Rajneet Kaur(E12892)",
+    "room": "Block-B1-319"
+  },
+  {
+    "day": "Tuesday",
+    "startTime": "12:50 PM",
+    "endTime": "01:40 PM",
+    "subject": "24TDT-312..T::GP-A",
+    "faculty": "Ashish Agrawal(E17872)",
+    "room": "Block-B1-615"
+  },
+  {
+    "day": "Tuesday",
+    "startTime": "01:40 PM",
+    "endTime": "02:30 PM",
+    "subject": "24TDT-312..T::GP-A",
+    "faculty": "Ashish Agrawal(E17872)",
+    "room": "Block-B1-615"
+  },
+  {
+    "day": "Tuesday",
+    "startTime": "02:30 PM",
+    "endTime": "03:20 PM",
+    "subject": "24CSH-301..P::GP-A",
+    "faculty": "Rajneet Kaur(E12892)",
+    "room": "Block-B1-701"
+  },
+  {
+    "day": "Tuesday",
+    "startTime": "03:20 PM",
+    "endTime": "04:10 PM",
+    "subject": "24CSH-301..P::GP-A",
+    "faculty": "Rajneet Kaur(E12892)",
+    "room": "Block-B1-701"
+  },
+  {
+    "day": "Wednesday",
+    "startTime": "09:30 AM",
+    "endTime": "10:20 AM",
+    "subject": "24CSP-304..P::GP-A",
+    "faculty": "Jasmeet Kaur(E17596)",
+    "room": "Block-B1-420"
+  },
+  {
+    "day": "Wednesday",
+    "startTime": "10:20 AM",
+    "endTime": "11:10 AM",
+    "subject": "24CSP-304..P::GP-A",
+    "faculty": "Jasmeet Kaur(E17596)",
+    "room": "Block-B1-420"
+  },
+  {
+    "day": "Wednesday",
+    "startTime": "11:10 AM",
+    "endTime": "12:00 PM",
+    "subject": "24SMT-341..L::GP-All",
+    "faculty": "Gagandeep Kaur Sidhu(E20755)",
+    "room": "Block-B1-308"
+  },
+  {
+    "day": "Wednesday",
+    "startTime": "12:50 PM",
+    "endTime": "01:40 PM",
+    "subject": "24CST-302..L::GP-All",
+    "faculty": "Sapna Aggarwal(E19088)",
+    "room": "Block-B1-517"
+  },
+  {
+    "day": "Wednesday",
+    "startTime": "01:40 PM",
+    "endTime": "02:30 PM",
+    "subject": "24SMT-341..L::GP-All",
+    "faculty": "Gagandeep Kaur Sidhu(E20755)",
+    "room": "Block-B1-517"
+  },
+  {
+    "day": "Wednesday",
+    "startTime": "02:30 PM",
+    "endTime": "03:20 PM",
+    "subject": "24CSI-305..P::GP-A",
+    "faculty": "Unknown",
+    "room": "Block-B1-30"
+  },
+  {
+    "day": "Thursday",
+    "startTime": "09:30 AM",
+    "endTime": "10:20 AM",
+    "subject": "24CSP-304..P::GP-A",
+    "faculty": "Jasmeet Kaur(E17596)",
+    "room": "Block-B1-618"
+  },
+  {
+    "day": "Thursday",
+    "startTime": "10:20 AM",
+    "endTime": "11:10 AM",
+    "subject": "24CSP-304..P::GP-A",
+    "faculty": "Jasmeet Kaur(E17596)",
+    "room": "Block-B1-618"
+  },
+  {
+    "day": "Thursday",
+    "startTime": "11:10 AM",
+    "endTime": "12:00 PM",
+    "subject": "24CSH-318..P::GP-A",
+    "faculty": "Jaspreet Singh(E20651)",
+    "room": "Block-B1-618"
+  },
+  {
+    "day": "Thursday",
+    "startTime": "12:00 PM",
+    "endTime": "12:50 PM",
+    "subject": "24CSH-318..P::GP-A",
+    "faculty": "Jaspreet Singh(E20651)",
+    "room": "Block-B1-618"
+  },
+  {
+    "day": "Thursday",
+    "startTime": "01:40 PM",
+    "endTime": "02:30 PM",
+    "subject": "24CST-331..L::GP-All",
+    "faculty": "Rajneet Kaur(E12892)",
+    "room": "Block-B1-313"
+  },
+  {
+    "day": "Thursday",
+    "startTime": "02:30 PM",
+    "endTime": "03:20 PM",
+    "subject": "24TDP-311..P::GP-A",
+    "faculty": "Priyanka(E20034)",
+    "room": "Block-B1-106-D"
+  },
+  {
+    "day": "Thursday",
+    "startTime": "03:20 PM",
+    "endTime": "04:10 PM",
+    "subject": "24TDP-311..P::GP-A",
+    "faculty": "Priyanka(E20034)",
+    "room": "Block-B1-106-D"
+  },
+  {
+    "day": "Friday",
+    "startTime": "09:30 AM",
+    "endTime": "10:20 AM",
+    "subject": "24CSH-318..P::GP-A",
+    "faculty": "Jaspreet Singh(E20651)",
+    "room": "Block-B1-618"
+  },
+  {
+    "day": "Friday",
+    "startTime": "10:20 AM",
+    "endTime": "11:10 AM",
+    "subject": "24CSH-318..P::GP-A",
+    "faculty": "Jaspreet Singh(E20651)",
+    "room": "Block-B1-618"
+  },
+  {
+    "day": "Friday",
+    "startTime": "11:10 AM",
+    "endTime": "12:00 PM",
+    "subject": "24CST-302..L::GP-All",
+    "faculty": "Sapna Aggarwal(E19088)",
+    "room": "Block-B1-511"
+  },
+  {
+    "day": "Friday",
+    "startTime": "12:50 PM",
+    "endTime": "01:40 PM",
+    "subject": "24TDP-311..P::GP-A",
+    "faculty": "Priyanka(E20034)",
+    "room": "Block-B1-111"
+  },
+  {
+    "day": "Friday",
+    "startTime": "01:40 PM",
+    "endTime": "02:30 PM",
+    "subject": "24TDP-311..P::GP-A",
+    "faculty": "Priyanka(E20034)",
+    "room": "Block-B1-111"
+  },
+  {
+    "day": "Friday",
+    "startTime": "02:30 PM",
+    "endTime": "03:20 PM",
+    "subject": "24SMT-341..L::GP-All",
+    "faculty": "Gagandeep Kaur Sidhu(E20755)",
+    "room": "Block-B1-612"
+  }
+]
