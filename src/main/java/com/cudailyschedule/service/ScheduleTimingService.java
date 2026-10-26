@@ -10,12 +10,15 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 /**
  * ScheduleTimingService manages time-based calculations:
  * - Determining whether a class is active, upcoming, or completed
  * - Calculating remaining time for countdowns and progress rings
  * - Preserves exact logic from cu-daily-schedule/src/lib/teacherSchedule.ts
  */
+@Service
 public class ScheduleTimingService {
 
     public enum SessionState {

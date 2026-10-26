@@ -3,9 +3,12 @@ package com.cudailyschedule.service;
 import com.cudailyschedule.config.DBConfig;
 import com.cudailyschedule.config.DBConnection;
 
+import org.springframework.stereotype.Service;
+
 /**
  * DatabaseService coordinates database connection status and health checks.
  */
+@Service
 public class DatabaseService {
     private static DBConnection.ConnectionTestResult lastTestResult;
 

@@ -11,10 +11,13 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+
 /**
  * AdminScheduleService provides management CRUD operations for timetable slots and teachers.
  * Demonstrates transactional integrity and business validation for college CSE evaluation.
  */
+@Service
 public class AdminScheduleService {
     private final TimetableDAO timetableDAO;
     private final TeacherDAO teacherDAO;

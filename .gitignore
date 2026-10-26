@@ -26,3 +26,7 @@ ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
 .DS_Store
+
+# Vaadin Frontend & Node
+node_modules/
+.vaadin-node-tasks.lock

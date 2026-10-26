@@ -23,10 +23,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Service;
+
 /**
  * StudentService manages student schedule data retrieval.
  * Connects to PostgreSQL database with seamless fallback to timetable.json.
  */
+@Service
 public class StudentService {
     private static final Logger LOGGER = Logger.getLogger(StudentService.class.getName());
 

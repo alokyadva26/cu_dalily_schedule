@@ -15,10 +15,13 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.springframework.stereotype.Service;
+
 /**
  * TeacherService handles teacher search and schedule retrieval.
  * Uses JDBC DAOs when database is online, with built-in seed fallback when offline.
  */
+@Service
 public class TeacherService {
     private static final Logger LOGGER = Logger.getLogger(TeacherService.class.getName());
 
