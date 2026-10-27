@@ -160,7 +160,7 @@ public class StudentScheduleView extends Div {
                 .set("position", "sticky")
                 .set("top", "80px");
 
-        currentLectureCard.addClassName("cu-dashboard-card");
+        currentLectureCard.addClassNames("cu-dashboard-card", "cu-current-lecture-card");
         currentLectureCard.getStyle()
                 .set("background", "#FFFFFF")
                 .set("border", "1px solid #E5E7EB")
@@ -169,7 +169,7 @@ public class StudentScheduleView extends Div {
                 .set("box-shadow", "0 1px 3px rgba(0, 0, 0, 0.03)")
                 .set("box-sizing", "border-box");
 
-        overviewCard.addClassName("cu-dashboard-card");
+        overviewCard.addClassNames("cu-dashboard-card", "cu-overview-card");
         overviewCard.getStyle()
                 .set("background", "#FFFFFF")
                 .set("border", "1px solid #E5E7EB")
@@ -195,15 +195,20 @@ public class StudentScheduleView extends Div {
         styleContainer.getElement().setProperty("innerHTML",
                 "<style>" +
                         "@media (max-width: 1024px) {" +
-                        "  .cu-student-content { flex-direction: column !important; padding: 20px !important; }" +
-                        "  .cu-schedule-column, .cu-sidebar-column { width: 100% !important; flex: none !important; position: static !important; }" +
+                        "  .cu-student-content { display: flex !important; flex-direction: column !important; padding: 20px 20px 96px 20px !important; gap: 24px !important; }" +
+                        "  .cu-sidebar-column { display: contents !important; }" +
+                        "  .cu-current-lecture-card { order: 1 !important; width: 100% !important; box-sizing: border-box !important; margin: 0 !important; }" +
+                        "  .cu-schedule-column { order: 2 !important; width: 100% !important; flex: none !important; position: static !important; box-sizing: border-box !important; margin: 0 !important; }" +
+                        "  .cu-overview-card { order: 3 !important; width: 100% !important; box-sizing: border-box !important; margin: 0 !important; }" +
                         "}" +
                         "@media (max-width: 640px) {" +
+                        "  .cu-student-content { padding: 16px 12px 96px 12px !important; gap: 20px !important; }" +
                         "  .cu-student-header { padding: 12px 16px !important; flex-wrap: wrap !important; gap: 12px !important; }" +
                         "  .cu-student-header-right { gap: 8px !important; flex-wrap: wrap !important; }" +
                         "  .cu-student-header-divider { display: none !important; }" +
                         "  .cu-lecture-card { flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; padding: 16px !important; }" +
                         "  .cu-lecture-info { padding: 0 !important; width: 100% !important; }" +
+                        "  .cu-floating-settings-btn { bottom: 24px !important; right: 20px !important; width: 52px !important; height: 52px !important; min-width: 52px !important; }" +
                         "}" +
                         "</style>");
         add(styleContainer);
