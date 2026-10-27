@@ -37,10 +37,14 @@ public class DBConfig {
     private void loadConfiguration() {
         Properties props = new Properties();
 
-        // 1. Try loading from .env or .env.local in current directory or parent directory
+        // 1. Try loading from .env or .env.local in current directory, subfolder, or parent directory
         File[] envFiles = new File[]{
             new File(".env"),
             new File(".env.local"),
+            new File("cu-daily-schedule-java/.env"),
+            new File("cu-daily-schedule-java/.env.local"),
+            new File("../.env"),
+            new File("../.env.local"),
             new File("config.properties")
         };
 
