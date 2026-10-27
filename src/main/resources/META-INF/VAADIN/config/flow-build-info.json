@@ -1,0 +1,18 @@
+{
+  "productionMode": false,
+  "eagerServerLoad": false,
+  "npmFolder": "C:\\Workspace\\Active projects\\cu_daily_schedule _java\\cu-daily-schedule-java",
+  "node.version": "v20.15.0",
+  "node.download.root": "https://nodejs.org/dist/",
+  "frontendFolder": "C:\\Workspace\\Active projects\\cu_daily_schedule _java\\cu-daily-schedule-java\\src\\main\\frontend",
+  "connect.javaSourceFolder": "C:\\Workspace\\Active projects\\cu_daily_schedule _java\\cu-daily-schedule-java\\src\\main\\java",
+  "javaResourceFolder": "C:\\Workspace\\Active projects\\cu_daily_schedule _java\\cu-daily-schedule-java\\src\\main\\resources",
+  "connect.applicationProperties": "C:\\Workspace\\Active projects\\cu_daily_schedule _java\\cu-daily-schedule-java\\src\\main\\resources\\application.properties",
+  "connect.openApiFile": "C:\\Workspace\\Active projects\\cu_daily_schedule _java\\cu-daily-schedule-java\\target\\generated-resources\\openapi.json",
+  "project.frontend.generated": "C:\\Workspace\\Active projects\\cu_daily_schedule _java\\cu-daily-schedule-java\\src\\main\\frontend\\generated",
+  "pnpm.enable": false,
+  "bun.enable": false,
+  "require.home.node": false,
+  "build.folder": "target",
+  "react.enable": true
+}
