@@ -8,22 +8,18 @@ import com.cudailyschedule.service.TeacherService;
 import com.cudailyschedule.util.TimeUtils;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.DetachEvent;
+import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.shared.Registration;
 
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
@@ -36,82 +32,165 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * TeacherScheduleView displays teacher profile header, daily lecture timeline, and live countdowns in Chrome.
+ * TeacherScheduleView provides a modern, clean, minimal Faculty Schedule dashboard
+ * matching the university brand guidelines and design specification.
  */
-@Route(value = "teacher-schedule", layout = MainLayout.class)
+@Route("teacher-schedule")
 @PageTitle("Faculty Schedule — CU Daily Schedule")
-public class TeacherScheduleView extends VerticalLayout implements HasUrlParameter<String> {
+public class TeacherScheduleView extends Div implements HasUrlParameter<String> {
 
     private final TeacherService teacherService;
     private final ScheduleTimingService timingService = new ScheduleTimingService();
 
     private Teacher currentTeacher;
     private List<ScheduleEntry> todayEntries = new ArrayList<>();
+    private Registration pollRegistration;
 
-    private final Div profileHeader = new Div();
-    private final VerticalLayout timelineLayout = new VerticalLayout();
-    private final Div dynamicCard = new Div();
+    // Layout containers
+    private final Div profileCard = new Div();
+    private final Div scheduleContainer = new Div();
+    private final Div statusCard = new Div();
 
     public TeacherScheduleView(TeacherService teacherService) {
         this.teacherService = teacherService;
 
+        // Root container: light gray background, full viewport, no navbars
         setSizeFull();
-        setSpacing(false);
-        setPadding(false);
-        addClassName("cu-watermark-container");
+        addClassName("cu-teacher-schedule-page");
+        getStyle()
+                .set("background-color", "#F3F4F6")
+                .set("min-height", "100vh")
+                .set("width", "100%")
+                .set("margin", "0")
+                .set("padding", "0")
+                .set("box-sizing", "border-box")
+                .set("font-family", "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif")
+                .set("display", "flex")
+                .set("flex-direction", "column");
 
-        // Top Navigation Bar
-        HorizontalLayout navBar = new HorizontalLayout();
-        navBar.setWidthFull();
-        navBar.setPadding(true);
-
-        Button backBtn = new Button("← Back to Faculty Search", e -> UI.getCurrent().navigate("teacher"));
-        backBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
-        backBtn.getStyle()
-                .set("color", "var(--cu-navy)")
-                .set("font-weight", "700")
-                .set("background-color", "#FFFFFF")
-                .set("border", "1px solid var(--cu-border)")
-                .set("border-radius", "12px");
-        navBar.add(backBtn);
-        add(navBar);
+        // Responsive style sheet injection
+        injectResponsiveStyles();
 
         // Main content wrapper
-        VerticalLayout content = new VerticalLayout();
-        content.setMaxWidth("1200px");
-        content.setWidthFull();
-        content.getStyle().set("padding", "0 24px 32px 24px");
-        content.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
+        Div contentWrapper = new Div();
+        contentWrapper.addClassName("cu-teacher-schedule-content");
+        contentWrapper.getStyle()
+                .set("max-width", "1440px")
+                .set("width", "100%")
+                .set("margin", "0 auto")
+                .set("padding", "32px 40px 48px 40px")
+                .set("box-sizing", "border-box")
+                .set("display", "flex")
+                .set("flex-direction", "column")
+                .set("gap", "28px");
 
-        // Profile Header Card
-        profileHeader.addClassName("cu-card");
-        profileHeader.setWidthFull();
-        profileHeader.getStyle()
-                .set("padding", "24px 32px")
-                .set("margin-bottom", "24px");
-
-        // Split Layout (Timeline & Dynamic Status)
-        HorizontalLayout splitLayout = new HorizontalLayout();
-        splitLayout.setWidthFull();
-        splitLayout.getStyle()
-                .set("gap", "24px")
+        // Top Teacher Profile Card
+        profileCard.addClassName("cu-teacher-profile-card");
+        profileCard.getStyle()
+                .set("background-color", "#FFFFFF")
+                .set("border", "1px solid #E5E7EB")
+                .set("border-radius", "16px")
+                .set("padding", "20px 28px")
+                .set("box-shadow", "0 1px 3px rgba(0, 0, 0, 0.03)")
+                .set("display", "flex")
+                .set("align-items", "center")
+                .set("justify-content", "space-between")
                 .set("flex-wrap", "wrap")
-                .set("align-items", "flex-start");
+                .set("gap", "16px")
+                .set("width", "100%")
+                .set("box-sizing", "border-box");
 
-        timelineLayout.getStyle().set("flex", "1 1 540px").set("min-width", "320px");
-        timelineLayout.setPadding(false);
+        // Two-column Main Section
+        Div mainCols = new Div();
+        mainCols.addClassName("cu-teacher-main-cols");
+        mainCols.getStyle()
+                .set("display", "flex")
+                .set("gap", "28px")
+                .set("align-items", "flex-start")
+                .set("width", "100%")
+                .set("box-sizing", "border-box");
 
-        dynamicCard.addClassName("cu-card");
-        dynamicCard.getStyle()
-                .set("flex", "0 0 360px")
+        // Left Column (Teaching Schedule ~68%)
+        Div scheduleCol = new Div();
+        scheduleCol.addClassName("cu-teacher-schedule-col");
+        scheduleCol.getStyle()
+                .set("flex", "68 1 0")
+                .set("min-width", "0")
+                .set("box-sizing", "border-box");
+
+        Div scheduleHeader = new Div();
+        scheduleHeader.getStyle().set("margin-bottom", "18px");
+
+        H1 headingTitle = new H1();
+        headingTitle.getStyle()
+                .set("font-size", "28px")
+                .set("font-weight", "800")
+                .set("margin", "0 0 4px 0")
+                .set("line-height", "1.2");
+
+        Span todaysSpan = new Span("Today's ");
+        todaysSpan.getStyle().set("color", "#111827");
+
+        Span teachingScheduleSpan = new Span("Teaching Schedule");
+        teachingScheduleSpan.getStyle().set("color", "#E30613");
+
+        headingTitle.add(todaysSpan, teachingScheduleSpan);
+
+        Paragraph subtitle = new Paragraph("Here are your classes for today.");
+        subtitle.getStyle()
+                .set("color", "#64748B")
+                .set("font-size", "14px")
+                .set("margin", "0");
+
+        scheduleHeader.add(headingTitle, subtitle);
+        scheduleCol.add(scheduleHeader, scheduleContainer);
+
+        // Right Column (Current Status ~32%)
+        Div statusCol = new Div();
+        statusCol.addClassName("cu-teacher-status-col");
+        statusCol.getStyle()
+                .set("flex", "32 1 0")
                 .set("min-width", "320px")
-                .set("padding", "24px")
+                .set("box-sizing", "border-box")
                 .set("position", "sticky")
-                .set("top", "24px");
+                .set("top", "32px");
 
-        splitLayout.add(timelineLayout, dynamicCard);
-        content.add(profileHeader, splitLayout);
-        add(content);
+        statusCard.addClassName("cu-teacher-status-card");
+        statusCard.getStyle()
+                .set("background-color", "#FFFFFF")
+                .set("border", "1px solid #E5E7EB")
+                .set("border-radius", "16px")
+                .set("padding", "24px")
+                .set("box-shadow", "0 1px 3px rgba(0, 0, 0, 0.03)")
+                .set("box-sizing", "border-box");
+
+        statusCol.add(statusCard);
+        mainCols.add(scheduleCol, statusCol);
+
+        contentWrapper.add(profileCard, mainCols);
+
+        // Floating Settings button in bottom-right corner
+        FloatingSettingsButton floatingSettingsBtn = new FloatingSettingsButton();
+
+        add(contentWrapper, floatingSettingsBtn);
+    }
+
+    private void injectResponsiveStyles() {
+        Span styleContainer = new Span();
+        styleContainer.getElement().setProperty("innerHTML",
+                "<style>" +
+                        "@media (max-width: 1024px) {" +
+                        "  .cu-teacher-schedule-content { padding: 20px !important; gap: 20px !important; }" +
+                        "  .cu-teacher-main-cols { flex-direction: column !important; }" +
+                        "  .cu-teacher-schedule-col, .cu-teacher-status-col { width: 100% !important; flex: none !important; position: static !important; }" +
+                        "}" +
+                        "@media (max-width: 640px) {" +
+                        "  .cu-teacher-profile-card { padding: 16px 20px !important; }" +
+                        "  .cu-teacher-lecture-card { flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; padding: 16px !important; }" +
+                        "  .cu-teacher-lecture-middle { padding: 0 !important; width: 100% !important; }" +
+                        "}" +
+                        "</style>");
+        add(styleContainer);
     }
 
     @Override
@@ -132,12 +211,16 @@ public class TeacherScheduleView extends VerticalLayout implements HasUrlParamet
     protected void onAttach(AttachEvent attachEvent) {
         super.onAttach(attachEvent);
         attachEvent.getUI().setPollInterval(1000);
-        attachEvent.getUI().addPollListener(e -> renderDynamicCard());
+        pollRegistration = attachEvent.getUI().addPollListener(e -> renderDynamicCard());
     }
 
     @Override
     protected void onDetach(DetachEvent detachEvent) {
         super.onDetach(detachEvent);
+        if (pollRegistration != null) {
+            pollRegistration.remove();
+            pollRegistration = null;
+        }
         if (detachEvent.getUI() != null) {
             detachEvent.getUI().setPollInterval(-1);
         }
@@ -165,77 +248,103 @@ public class TeacherScheduleView extends VerticalLayout implements HasUrlParamet
     }
 
     private void renderProfileHeader() {
-        profileHeader.removeAll();
+        profileCard.removeAll();
         if (currentTeacher == null) return;
 
-        HorizontalLayout row = new HorizontalLayout();
-        row.setWidthFull();
-        row.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
-        row.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
-        row.getStyle().set("flex-wrap", "wrap").set("gap", "16px");
-
-        // Avatar + info
-        HorizontalLayout left = new HorizontalLayout();
-        left.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
-        left.setSpacing(true);
+        // Left section: Avatar + Name + Department
+        Div left = new Div();
+        left.getStyle()
+                .set("display", "flex")
+                .set("align-items", "center")
+                .set("gap", "16px");
 
         Div avatar = new Div();
+        avatar.addClassName("cu-teacher-avatar");
         avatar.getStyle()
-                .set("width", "64px")
-                .set("height", "64px")
+                .set("width", "56px")
+                .set("height", "56px")
                 .set("border-radius", "50%")
-                .set("background-color", "var(--cu-red)")
+                .set("background-color", "#E30613")
                 .set("color", "#FFFFFF")
                 .set("display", "flex")
                 .set("align-items", "center")
                 .set("justify-content", "center")
                 .set("font-size", "1.6rem")
-                .set("font-weight", "800");
+                .set("font-weight", "800")
+                .set("flex-shrink", "0");
+
         String initial = currentTeacher.getEmployeeName() != null && !currentTeacher.getEmployeeName().isEmpty()
-                ? currentTeacher.getEmployeeName().substring(0, 1) : "T";
+                ? currentTeacher.getEmployeeName().substring(0, 1).toUpperCase() : "T";
         avatar.setText(initial);
 
-        VerticalLayout info = new VerticalLayout();
-        info.setPadding(false);
-        info.setSpacing(false);
+        Div textInfo = new Div();
+        textInfo.getStyle().set("display", "flex").set("flex-direction", "column");
 
-        H1 name = new H1(currentTeacher.getEmployeeName());
-        name.getStyle().set("font-size", "1.5rem").set("font-weight", "800").set("color", "var(--cu-navy)").set("margin", "0 0 4px 0");
+        H2 name = new H2(currentTeacher.getEmployeeName());
+        name.getStyle()
+                .set("font-size", "1.4rem")
+                .set("font-weight", "800")
+                .set("color", "#111827")
+                .set("margin", "0 0 2px 0")
+                .set("line-height", "1.2");
 
-        Span dept = new Span("Department: " + currentTeacher.getDepartment());
-        dept.getStyle().set("color", "var(--cu-text-muted)").set("font-size", "0.9rem");
+        String deptStr = currentTeacher.getDepartment() != null ? currentTeacher.getDepartment() : "CSE";
+        Span dept = new Span("Department: " + deptStr);
+        dept.getStyle()
+                .set("color", "#64748B")
+                .set("font-size", "0.92rem")
+                .set("font-weight", "500");
 
-        info.add(name, dept);
-        left.add(avatar, info);
+        textInfo.add(name, dept);
+        left.add(avatar, textInfo);
 
-        // Employee ID Badge on right
-        Span idBadge = new Span("ID: " + currentTeacher.getEmployeeId());
+        // Right section: Light-red pill with ID badge icon
+        Div idBadge = new Div();
+        idBadge.addClassName("cu-teacher-id-badge");
         idBadge.getStyle()
-                .set("background-color", "var(--cu-navy)")
-                .set("color", "#FFFFFF")
-                .set("font-weight", "700")
-                .set("padding", "6px 14px")
-                .set("border-radius", "8px")
-                .set("font-size", "0.9rem");
+                .set("background-color", "#FFF5F5")
+                .set("border", "1px solid #FEE2E2")
+                .set("border-radius", "10px")
+                .set("padding", "8px 16px")
+                .set("display", "inline-flex")
+                .set("align-items", "center")
+                .set("gap", "8px");
 
-        row.add(left, idBadge);
-        profileHeader.add(row);
+        Html idIconSvg = new Html(
+                "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#E30613\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\">"
+                + "<rect x=\"3\" y=\"4\" width=\"18\" height=\"16\" rx=\"2\"></rect>"
+                + "<circle cx=\"9\" cy=\"10\" r=\"2\"></circle>"
+                + "<line x1=\"15\" y1=\"8\" x2=\"17\" y2=\"8\"></line>"
+                + "<line x1=\"15\" y1=\"12\" x2=\"17\" y2=\"12\"></line>"
+                + "<line x1=\"7\" y1=\"16\" x2=\"17\" y2=\"16\"></line>"
+                + "</svg>"
+        );
+
+        Span idText = new Span("ID: " + currentTeacher.getEmployeeId());
+        idText.getStyle()
+                .set("color", "#111827")
+                .set("font-weight", "800")
+                .set("font-size", "0.92rem");
+
+        idBadge.add(idIconSvg, idText);
+
+        profileCard.add(left, idBadge);
     }
 
     private void renderTimeline() {
-        timelineLayout.removeAll();
-
-        H2 title = new H2("Today's Teaching Schedule");
-        title.getStyle().set("font-size", "1.3rem").set("font-weight", "800").set("color", "var(--cu-navy)").set("margin", "0 0 16px 0");
-        timelineLayout.add(title);
+        scheduleContainer.removeAll();
 
         if (todayEntries.isEmpty()) {
             Div empty = new Div();
-            empty.addClassName("cu-card");
-            empty.getStyle().set("padding", "28px").set("text-align", "center");
-            empty.add(new H3("No Lectures Scheduled Today"));
-            empty.add(new Paragraph("This faculty member has no teaching sessions scheduled for today."));
-            timelineLayout.add(empty);
+            empty.getStyle()
+                    .set("background-color", "#FFFFFF")
+                    .set("border", "1px solid #E5E7EB")
+                    .set("border-radius", "14px")
+                    .set("padding", "32px")
+                    .set("text-align", "center")
+                    .set("color", "#64748B");
+            empty.add(new Paragraph("No lectures scheduled for today."));
+            scheduleContainer.add(empty);
             return;
         }
 
@@ -249,89 +358,253 @@ public class TeacherScheduleView extends VerticalLayout implements HasUrlParamet
             boolean isCompleted = et != null && now.isAfter(et);
 
             Div card = new Div();
-            card.addClassName("cu-card");
+            card.addClassName("cu-teacher-lecture-card");
             card.getStyle()
-                    .set("padding", "16px 20px")
-                    .set("margin-bottom", "12px")
+                    .set("background-color", isActive ? "#FFF5F5" : "#FFFFFF")
+                    .set("border", isActive ? "1px solid #FECACA" : "1px solid #E5E7EB")
+                    .set("border-left", isActive ? "5px solid #E30613" : (isCompleted ? "5px solid #16A34A" : "5px solid #111827"))
+                    .set("border-radius", "14px")
+                    .set("padding", "18px 24px")
+                    .set("margin-bottom", "14px")
+                    .set("box-shadow", "0 1px 3px rgba(0, 0, 0, 0.03)")
                     .set("display", "flex")
-                    .set("justify-content", "space-between")
                     .set("align-items", "center")
-                    .set("border-left", isActive ? "6px solid var(--cu-red)" : "1px solid var(--cu-border)");
+                    .set("justify-content", "space-between")
+                    .set("box-sizing", "border-box")
+                    .set("transition", "transform 0.15s ease, box-shadow 0.15s ease");
 
-            VerticalLayout details = new VerticalLayout();
-            details.setPadding(false);
-            details.setSpacing(false);
+            // Left Part: Timing
+            Div timeBox = new Div();
+            timeBox.getStyle()
+                    .set("display", "flex")
+                    .set("flex-direction", "column")
+                    .set("min-width", "95px")
+                    .set("flex-shrink", "0");
 
-            Span timeSpan = new Span(entry.getStartTime() + " - " + entry.getEndTime());
-            timeSpan.getStyle().set("font-size", "0.8rem").set("font-weight", "700").set("color", isActive ? "var(--cu-red)" : "var(--cu-text-muted)");
+            Span startTime = new Span(entry.getStartTime());
+            startTime.getStyle()
+                    .set("font-size", "15px")
+                    .set("font-weight", "800")
+                    .set("color", isActive ? "#E30613" : "#111827")
+                    .set("line-height", "1.2");
 
-            String subName = entry.getCourseName() != null ? entry.getCourseName() : entry.getCourseCode();
-            Span sub = new Span(subName);
-            sub.getStyle().set("font-size", "1.05rem").set("font-weight", "700").set("color", "var(--cu-navy)");
+            Span endTime = new Span(entry.getEndTime());
+            endTime.getStyle()
+                    .set("font-size", "13px")
+                    .set("font-weight", "500")
+                    .set("color", "#64748B")
+                    .set("margin-top", "2px");
 
-            Span room = new Span("📍 Room: " + entry.getRoomNo() + " • Section: " + entry.getSection());
-            room.getStyle().set("font-size", "0.85rem").set("color", "var(--cu-text-muted)");
+            timeBox.add(startTime, endTime);
 
-            details.add(timeSpan, sub, room);
+            // Middle Part: Subject Name, Room, Section
+            Div middleBox = new Div();
+            middleBox.addClassName("cu-teacher-lecture-middle");
+            middleBox.getStyle()
+                    .set("flex", "1")
+                    .set("padding", "0 24px")
+                    .set("display", "flex")
+                    .set("flex-direction", "column")
+                    .set("gap", "4px");
 
-            Span statusPill = new Span(isActive ? "● ONGOING" : (isCompleted ? "COMPLETED" : "UPCOMING"));
-            statusPill.getStyle()
-                    .set("font-size", "0.75rem")
-                    .set("font-weight", "700")
-                    .set("padding", "4px 10px")
+            String subjectName = entry.getCourseName() != null ? entry.getCourseName() : entry.getCourseCode();
+            Span subjectSpan = new Span(subjectName);
+            subjectSpan.getStyle()
+                    .set("font-size", "16px")
+                    .set("font-weight", "800")
+                    .set("color", "#111827");
+
+            Div metaRow = new Div();
+            metaRow.getStyle()
+                    .set("display", "flex")
+                    .set("align-items", "center")
+                    .set("flex-wrap", "wrap")
+                    .set("gap", "6px")
+                    .set("font-size", "13px")
+                    .set("color", "#64748B");
+
+            Html pinSvg = new Html(
+                    "<svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"#E30613\" style=\"margin-right: 4px; vertical-align: -2px;\">"
+                    + "<path d=\"M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z\"/>"
+                    + "</svg>"
+            );
+            Span roomSpan = new Span("Room: " + (entry.getRoomNo() != null ? entry.getRoomNo() : "N/A"));
+            roomSpan.getStyle().set("font-weight", "500");
+
+            Div roomContainer = new Div(pinSvg, roomSpan);
+            roomContainer.getStyle().set("display", "inline-flex").set("align-items", "center");
+
+            Span dividerSpan = new Span("|");
+            dividerSpan.getStyle().set("color", "#E5E7EB").set("margin", "0 6px");
+
+            Html sectionSvg = new Html(
+                    "<svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#E30613\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"margin-right: 4px; vertical-align: -2px;\">"
+                    + "<path d=\"M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2\"></path>"
+                    + "<circle cx=\"9\" cy=\"7\" r=\"4\"></circle>"
+                    + "<path d=\"M23 21v-2a4 4 0 0 0-3-3.87\"></path>"
+                    + "<path d=\"M16 3.13a4 4 0 0 1 0 7.75\"></path>"
+                    + "</svg>"
+            );
+            Span secSpan = new Span("Section: " + (entry.getSection() != null ? entry.getSection() : "N/A"));
+            secSpan.getStyle().set("font-weight", "500");
+
+            Div secContainer = new Div(sectionSvg, secSpan);
+            secContainer.getStyle().set("display", "inline-flex").set("align-items", "center");
+
+            metaRow.add(roomContainer, dividerSpan, secContainer);
+            middleBox.add(subjectSpan, metaRow);
+
+            // Right Part: Status Badge
+            Div badge = new Div();
+            badge.getStyle()
+                    .set("display", "inline-flex")
+                    .set("align-items", "center")
+                    .set("padding", "6px 14px")
                     .set("border-radius", "9999px")
-                    .set("background-color", isActive ? "var(--cu-red-light)" : (isCompleted ? "#F1F5F9" : "#E2E8F0"))
-                    .set("color", isActive ? "var(--cu-red)" : (isCompleted ? "#94A3B8" : "var(--cu-navy)"));
+                    .set("font-size", "11px")
+                    .set("font-weight", "800")
+                    .set("letter-spacing", "0.5px")
+                    .set("flex-shrink", "0");
 
-            card.add(details, statusPill);
-            timelineLayout.add(card);
+            if (isActive) {
+                badge.getStyle().set("background-color", "#FEE2E2").set("color", "#E30613");
+                Html ongoingDot = new Html("<svg width=\"10\" height=\"10\" viewBox=\"0 0 24 24\" fill=\"#E30613\" style=\"margin-right: 6px;\"><circle cx=\"12\" cy=\"12\" r=\"10\"/></svg>");
+                badge.add(ongoingDot, new Span("ONGOING"));
+            } else if (isCompleted) {
+                badge.getStyle().set("background-color", "#DCFCE7").set("color", "#16A34A");
+                Html checkSvg = new Html("<svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"#16A34A\" style=\"margin-right: 6px;\"><path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z\"/></svg>");
+                badge.add(checkSvg, new Span("COMPLETED"));
+            } else {
+                badge.getStyle().set("background-color", "#F3F4F6").set("color", "#111827");
+                Html clockSvg = new Html("<svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#111827\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"margin-right: 6px;\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><polyline points=\"12 6 12 12 16 14\"></polyline></svg>");
+                badge.add(clockSvg, new Span("UPCOMING"));
+            }
+
+            card.add(timeBox, middleBox, badge);
+            scheduleContainer.add(card);
         }
     }
 
     private void renderDynamicCard() {
-        dynamicCard.removeAll();
+        statusCard.removeAll();
         LocalTime now = TimeUtils.getNowInKolkata().toLocalTime();
         ScheduleStatus status = timingService.calculateScheduleStatus(todayEntries, now);
 
-        H3 title = new H3("CURRENT STATUS");
-        title.getStyle().set("color", "var(--cu-navy)").set("font-size", "1.1rem").set("font-weight", "800").set("margin", "0 0 16px 0");
+        // Header: Red vertical bar + CURRENT STATUS
+        Div headerRow = new Div();
+        headerRow.getStyle()
+                .set("display", "flex")
+                .set("align-items", "center")
+                .set("margin-bottom", "18px");
 
+        Div redBar = new Div();
+        redBar.getStyle()
+                .set("width", "4px")
+                .set("height", "18px")
+                .set("background-color", "#E30613")
+                .set("border-radius", "2px")
+                .set("margin-right", "8px");
+
+        Span title = new Span("CURRENT STATUS");
+        title.getStyle()
+                .set("font-size", "15px")
+                .set("font-weight", "800")
+                .set("color", "#111827")
+                .set("letter-spacing", "0.5px");
+
+        headerRow.add(redBar, title);
+
+        // Availability / Activity status box
         Div statusBox = new Div();
-        statusBox.getStyle().set("background-color", "var(--cu-bg)").set("border-radius", "16px").set("padding", "20px").set("text-align", "center");
+        statusBox.getStyle()
+                .set("border-radius", "14px")
+                .set("padding", "22px 20px")
+                .set("display", "flex")
+                .set("align-items", "center")
+                .set("justify-content", "center")
+                .set("gap", "10px")
+                .set("margin-bottom", "18px");
+
+        Div msgRow = new Div();
+        msgRow.getStyle()
+                .set("display", "flex")
+                .set("align-items", "center")
+                .set("justify-content", "center")
+                .set("gap", "8px")
+                .set("color", "#64748B")
+                .set("font-size", "13px")
+                .set("text-align", "center");
+
+        Html calendarIcon = new Html(
+                "<svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#64748B\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\">"
+                + "<rect x=\"3\" y=\"4\" width=\"18\" height=\"18\" rx=\"2\" ry=\"2\"></rect>"
+                + "<line x1=\"16\" y1=\"2\" x2=\"16\" y2=\"6\"></line>"
+                + "<line x1=\"8\" y1=\"2\" x2=\"8\" y2=\"6\"></line>"
+                + "<line x1=\"3\" y1=\"10\" x2=\"21\" y2=\"10\"></line>"
+                + "</svg>"
+        );
 
         if (status.getCurrentClass() != null) {
+            // Teacher is currently conducting a lecture
             ScheduleEntry active = status.getCurrentClass();
-            H2 countdown = new H2(TimeUtils.formatRemainingSeconds(status.getRemainingSeconds()));
-            countdown.getStyle().set("font-size", "2.2rem").set("font-weight", "900").set("color", "var(--cu-red)").set("margin", "0 0 4px 0").set("font-family", "monospace");
-            Span label = new Span("Remaining in Active Lecture");
-            label.getStyle().set("font-size", "0.8rem").set("color", "var(--cu-text-muted)");
-            statusBox.add(countdown, label);
+            statusBox.getStyle()
+                    .set("background-color", "#FFF5F5")
+                    .set("border", "1px solid #FECACA");
 
-            Paragraph actSub = new Paragraph("Conducting: " + active.getCourseName());
-            actSub.getStyle().set("font-weight", "700").set("margin-top", "16px").set("color", "var(--cu-navy)");
-            Paragraph actRoom = new Paragraph("Room: " + active.getRoomNo());
-            actRoom.getStyle().set("color", "var(--cu-text-muted)").set("margin", "0");
-            dynamicCard.add(title, statusBox, actSub, actRoom);
+            Html redDot = new Html("<svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"#E30613\"><circle cx=\"12\" cy=\"12\" r=\"10\"/></svg>");
+            Span inLectureSpan = new Span("In Lecture");
+            inLectureSpan.getStyle()
+                    .set("color", "#E30613")
+                    .set("font-size", "24px")
+                    .set("font-weight", "800");
+
+            statusBox.add(redDot, inLectureSpan);
+
+            String timeRem = TimeUtils.formatRemainingSeconds(status.getRemainingSeconds());
+            String actMsg = "Conducting " + (active.getCourseName() != null ? active.getCourseName() : active.getCourseCode())
+                    + " in Room " + (active.getRoomNo() != null ? active.getRoomNo() : "N/A") + " (" + timeRem + " remaining)";
+            Span msgText = new Span(actMsg);
+            msgRow.add(calendarIcon, msgText);
+
         } else if (status.getNextClass() != null) {
+            // Teacher is currently Available, but has an upcoming lecture later today
             ScheduleEntry next = status.getNextClass();
-            H2 countdown = new H2(TimeUtils.formatRemainingSeconds(status.getRemainingSeconds()));
-            countdown.getStyle().set("font-size", "2.2rem").set("font-weight", "900").set("color", "var(--cu-navy)").set("margin", "0 0 4px 0").set("font-family", "monospace");
-            Span label = new Span("Until Next Lecture");
-            label.getStyle().set("font-size", "0.8rem").set("color", "var(--cu-text-muted)");
-            statusBox.add(countdown, label);
+            statusBox.getStyle()
+                    .set("background-color", "#F0FDF4")
+                    .set("border", "1px solid #DCFCE7");
 
-            Paragraph nxtSub = new Paragraph("Next Up: " + next.getCourseName());
-            nxtSub.getStyle().set("font-weight", "700").set("margin-top", "16px").set("color", "var(--cu-navy)");
-            Paragraph nxtRoom = new Paragraph("Room: " + next.getRoomNo());
-            nxtRoom.getStyle().set("color", "var(--cu-text-muted)").set("margin", "0");
-            dynamicCard.add(title, statusBox, nxtSub, nxtRoom);
+            Html greenDot = new Html("<svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"#16A34A\"><circle cx=\"12\" cy=\"12\" r=\"10\"/></svg>");
+            Span availSpan = new Span("Available");
+            availSpan.getStyle()
+                    .set("color", "#16A34A")
+                    .set("font-size", "24px")
+                    .set("font-weight", "800");
+
+            statusBox.add(greenDot, availSpan);
+
+            String nxtMsg = "Next class at " + next.getStartTime() + " in Room " + (next.getRoomNo() != null ? next.getRoomNo() : "N/A") + ".";
+            Span msgText = new Span(nxtMsg);
+            msgRow.add(calendarIcon, msgText);
+
         } else {
-            H2 freeText = new H2("Available");
-            freeText.getStyle().set("font-size", "1.8rem").set("font-weight", "700").set("color", "var(--cu-green)").set("margin", "0");
-            statusBox.add(freeText);
-            Paragraph note = new Paragraph("No active or upcoming lectures at this time.");
-            note.getStyle().set("color", "var(--cu-text-muted)").set("margin-top", "12px");
-            dynamicCard.add(title, statusBox, note);
+            // Teacher is Available and no active/upcoming lectures remain today
+            statusBox.getStyle()
+                    .set("background-color", "#F0FDF4")
+                    .set("border", "1px solid #DCFCE7");
+
+            Html greenDot = new Html("<svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"#16A34A\"><circle cx=\"12\" cy=\"12\" r=\"10\"/></svg>");
+            Span availSpan = new Span("Available");
+            availSpan.getStyle()
+                    .set("color", "#16A34A")
+                    .set("font-size", "24px")
+                    .set("font-weight", "800");
+
+            statusBox.add(greenDot, availSpan);
+
+            Span msgText = new Span("No active or upcoming lectures at this time.");
+            msgRow.add(calendarIcon, msgText);
         }
+
+        statusCard.add(headerRow, statusBox, msgRow);
     }
 }

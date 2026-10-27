@@ -154,3 +154,872 @@ body {
     transform: translateY(-2px) scale(0.99) !important;
 }
 
+/* ==========================================================================
+   Student Dashboard Redesign (Strict Palette: #E30613, #111827, #16A34A, #FFFFFF, #F3F4F6)
+   ========================================================================== */
+.cu-student-page {
+    background-color: #F3F4F6;
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+.cu-student-header {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #E5E7EB;
+    padding: 14px 40px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.cu-student-header-logo {
+    height: 48px;
+    object-fit: contain;
+    cursor: pointer;
+    display: block;
+}
+
+.cu-student-header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.cu-student-date-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #111827;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.cu-student-clock-pill {
+    background-color: #111827;
+    color: #FFFFFF;
+    border-radius: 10px;
+    padding: 7px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: monospace;
+    letter-spacing: 0.3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.cu-student-header-divider {
+    width: 1px;
+    height: 22px;
+    background-color: #E5E7EB;
+    margin: 0 4px;
+}
+
+.cu-pill-online {
+    background-color: #DCFCE7;
+    color: #16A34A;
+    border-radius: 9999px;
+    padding: 6px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: opacity 0.2s ease;
+}
+
+.cu-pill-offline {
+    background-color: #FEE2E2;
+    color: #E30613;
+    border-radius: 9999px;
+    padding: 6px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: opacity 0.2s ease;
+}
+
+.cu-dot-online {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #16A34A;
+    display: inline-block;
+}
+
+.cu-dot-offline {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #E30613;
+    display: inline-block;
+}
+
+.cu-student-content {
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 28px 40px 48px 40px;
+    display: flex;
+    gap: 28px;
+    box-sizing: border-box;
+    align-items: flex-start;
+}
+
+.cu-schedule-column {
+    flex: 68 1 0;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.cu-sidebar-column {
+    flex: 32 1 0;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    box-sizing: border-box;
+    position: sticky;
+    top: 90px;
+}
+
+.cu-schedule-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.cu-schedule-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #111827;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.cu-schedule-title-red {
+    color: #E30613;
+}
+
+.cu-schedule-subtitle {
+    font-size: 14px;
+    color: #6B7280;
+    margin: 6px 0 0 0;
+    font-weight: 400;
+}
+
+.cu-btn-tomorrow {
+    background-color: #FEE2E2 !important;
+    color: #E30613 !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    border-radius: 9999px !important;
+    padding: 8px 18px !important;
+    border: none !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    transition: background-color 0.15s ease, transform 0.15s ease !important;
+}
+
+.cu-btn-tomorrow:hover {
+    background-color: #FECDCD !important;
+    transform: translateY(-1px);
+}
+
+.cu-lecture-card {
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 16px;
+    padding: 18px 24px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    cursor: pointer;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.cu-lecture-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.cu-lecture-card-completed {
+    border-left: 6px solid #16A34A !important;
+    background: #FFFFFF !important;
+}
+
+.cu-lecture-card-ongoing {
+    border-left: 6px solid #E30613 !important;
+    background: #FFF5F5 !important;
+    border-color: #FECACA !important;
+    box-shadow: 0 2px 8px rgba(227, 6, 19, 0.08) !important;
+}
+
+.cu-lecture-card-upcoming {
+    border-left: 6px solid #374151 !important;
+    background: #FFFFFF !important;
+}
+
+.cu-time-block {
+    width: 105px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.cu-time-start {
+    font-size: 16px;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 3px;
+    line-height: 1.2;
+}
+
+.cu-time-start-ongoing {
+    color: #E30613 !important;
+}
+
+.cu-time-end {
+    font-size: 13px;
+    font-weight: 500;
+    color: #6B7280;
+    line-height: 1.2;
+}
+
+.cu-lecture-info {
+    flex: 1;
+    padding: 0 24px;
+    min-width: 0;
+}
+
+.cu-lecture-course-code {
+    font-size: 17px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 8px;
+    letter-spacing: -0.2px;
+}
+
+.cu-lecture-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.cu-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #4B5563;
+}
+
+.cu-badge-completed {
+    background-color: #DCFCE7;
+    color: #16A34A;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+}
+
+.cu-badge-ongoing {
+    background-color: #FEE2E2;
+    color: #E30613;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+}
+
+.cu-badge-upcoming {
+    background-color: #F3F4F6;
+    color: #374151;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+}
+
+.cu-dashboard-card {
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    box-sizing: border-box;
+}
+
+.cu-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.cu-card-accent-bar {
+    width: 4px;
+    height: 20px;
+    background-color: #E30613;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.cu-card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.cu-countdown-box {
+    background-color: #FFF7F7;
+    border-radius: 16px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 20px;
+}
+
+.cu-timer-remaining-label {
+    font-size: 13px;
+    color: #6B7280;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.cu-timer-value {
+    font-size: 34px;
+    font-weight: 800;
+    color: #E30613;
+    line-height: 1;
+    letter-spacing: -0.5px;
+    font-family: monospace;
+}
+
+.cu-current-course-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.cu-current-course-code {
+    font-size: 17px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.cu-badge-session {
+    background-color: #FEE2E2;
+    color: #E30613;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+}
+
+.cu-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+}
+
+.cu-detail-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #6B7280;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.cu-detail-value {
+    font-weight: 700;
+    color: #111827;
+    font-size: 13px;
+    text-align: right;
+}
+
+.cu-overview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.cu-stat-tile {
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-sizing: border-box;
+}
+
+.cu-stat-completed {
+    background-color: #DCFCE7;
+}
+
+.cu-stat-ongoing {
+    background-color: #FEE2E2;
+}
+
+.cu-stat-upcoming {
+    background-color: #F3F4F6;
+}
+
+.cu-stat-total {
+    background-color: #FEE2E2;
+}
+
+.cu-stat-count {
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.cu-stat-label {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+@media (max-width: 1024px) {
+    .cu-student-content {
+        flex-direction: column;
+        padding: 20px;
+        gap: 24px;
+    }
+    .cu-student-header {
+        padding: 12px 20px;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    .cu-sidebar-column {
+        width: 100%;
+        position: static;
+    }
+    .cu-schedule-column {
+        width: 100%;
+    }
+}
+
+@media (max-width: 640px) {
+    .cu-lecture-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+    }
+    .cu-lecture-info {
+        padding: 0;
+    }
+    .cu-student-header-right {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .cu-student-header-divider {
+        display: none;
+    }
+}
+
+/* ==========================================================================
+   Teacher Schedule (Minimal Search View) Redesign
+   ========================================================================== */
+
+.cu-teacher-page {
+    min-height: 100vh;
+    width: 100%;
+    background-color: #F9FAFB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 24px 16px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.cu-teacher-card {
+    background-color: #FFFFFF;
+    width: 100%;
+    max-width: 600px;
+    border-radius: 18px;
+    border: 1px solid #E5E7EB;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+    padding: 44px 44px 40px 44px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.cu-teacher-icon-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: #FEE2E2;
+    margin: 0 auto 18px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cu-teacher-title {
+    text-align: center;
+    margin: 0 0 8px 0;
+    font-size: 1.85rem;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+}
+
+.cu-teacher-title-dark {
+    color: #111827;
+}
+
+.cu-teacher-title-red {
+    color: #E30613;
+}
+
+.cu-teacher-subtitle {
+    text-align: center;
+    color: #6B7280;
+    font-size: 0.92rem;
+    line-height: 1.45;
+    max-width: 440px;
+    margin: 0 auto 28px auto;
+}
+
+.cu-teacher-label {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.cu-teacher-input {
+    width: 100%;
+    margin-bottom: 18px;
+}
+
+.cu-teacher-input::part(input-field) {
+    background-color: #F9FAFB;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    min-height: 48px;
+    padding: 0 12px;
+}
+
+.cu-teacher-input::part(input-field):focus-within {
+    border-color: #E30613;
+    box-shadow: 0 0 0 2px rgba(227, 6, 19, 0.15);
+    background-color: #FFFFFF;
+}
+
+.cu-teacher-input::part(value) {
+    color: #111827;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.cu-btn-search {
+    width: 100%;
+    min-height: 48px;
+    background-color: #E30613 !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    border-radius: 12px !important;
+    font-weight: 700 !important;
+    font-size: 0.98rem !important;
+    cursor: pointer !important;
+    margin-bottom: 20px !important;
+    box-shadow: 0 2px 4px rgba(227, 6, 19, 0.2);
+    transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.cu-btn-search:hover {
+    background-color: #C50510 !important;
+}
+
+.cu-divider-or {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.cu-divider-line {
+    flex: 1;
+    height: 1px;
+    background-color: #E5E7EB;
+}
+
+.cu-divider-text {
+    padding: 0 14px;
+    color: #9CA3AF;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.cu-btn-qr {
+    width: 100%;
+    min-height: 48px;
+    background-color: #FFF5F5 !important;
+    border: 1px solid #FECACA !important;
+    color: #E30613 !important;
+    border-radius: 12px !important;
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+    cursor: pointer !important;
+    margin-bottom: 26px !important;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.cu-btn-qr:hover {
+    background-color: #FEE2E2 !important;
+    border-color: #FCA5A5 !important;
+}
+
+.cu-sample-label {
+    display: block;
+    text-align: center;
+    width: 100%;
+    color: #6B7280;
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.cu-sample-btn {
+    background-color: #FFFFFF !important;
+    border: 1px solid #E5E7EB !important;
+    border-radius: 10px !important;
+    color: #111827 !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+    padding: 8px 16px !important;
+    height: 38px !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease;
+}
+
+.cu-sample-btn:hover {
+    background-color: #F9FAFB !important;
+    border-color: #D1D5DB !important;
+}
+
+@media (max-width: 640px) {
+    .cu-teacher-card {
+        padding: 32px 20px;
+    }
+    .cu-teacher-title {
+        font-size: 1.55rem;
+    }
+}
+
+/* ==========================================================================
+   Floating Settings Button (Shared across Student & Teacher pages)
+   ========================================================================== */
+
+.cu-floating-settings-btn {
+    position: fixed !important;
+    bottom: 32px !important;
+    right: 32px !important;
+    width: 58px !important;
+    height: 58px !important;
+    min-width: 58px !important;
+    border-radius: 50% !important;
+    background-color: #FFFFFF !important;
+    border: 1px solid #E5E7EB !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10), 0 2px 6px rgba(0, 0, 0, 0.06) !important;
+    cursor: pointer !important;
+    z-index: 9999 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.cu-floating-settings-btn:hover {
+    background-color: #FFF5F5 !important;
+    border-color: #FECACA !important;
+    transform: scale(1.08) rotate(15deg) !important;
+    box-shadow: 0 8px 20px rgba(227, 6, 19, 0.20) !important;
+}
+
+.cu-floating-settings-btn:active {
+    transform: scale(0.96) !important;
+}
+
+/* ==========================================================================
+   Teacher Schedule Timeline Page Styles
+   ========================================================================== */
+
+.cu-teacher-schedule-page {
+    background-color: #F3F4F6;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.cu-teacher-schedule-content {
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 32px 40px 48px 40px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.cu-teacher-profile-card {
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 16px;
+    padding: 20px 28px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.cu-teacher-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: #E30613;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    font-weight: 800;
+}
+
+.cu-teacher-id-badge {
+    background-color: #FFF5F5;
+    border: 1px solid #FEE2E2;
+    border-radius: 10px;
+    padding: 8px 16px;
+}
+
+.cu-teacher-main-cols {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.cu-teacher-schedule-col {
+    flex: 68 1 0;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.cu-teacher-status-col {
+    flex: 32 1 0;
+    min-width: 320px;
+    box-sizing: border-box;
+    position: sticky;
+    top: 32px;
+}
+
+.cu-teacher-lecture-card {
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 14px;
+    padding: 18px 24px;
+    margin-bottom: 14px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cu-teacher-lecture-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    transform: translateY(-1px);
+}
+
+@media (max-width: 1024px) {
+    .cu-teacher-schedule-content {
+        padding: 20px;
+        gap: 20px;
+    }
+    .cu-teacher-main-cols {
+        flex-direction: column;
+    }
+    .cu-teacher-schedule-col, .cu-teacher-status-col {
+        width: 100%;
+        flex: none;
+        position: static;
+    }
+}
+
+@media (max-width: 640px) {
+    .cu-floating-settings-btn {
+        bottom: 24px !important;
+        right: 20px !important;
+        width: 52px !important;
+        height: 52px !important;
+        min-width: 52px !important;
+    }
+    .cu-teacher-profile-card {
+        padding: 16px 20px;
+    }
+    .cu-teacher-lecture-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+    }
+    .cu-teacher-lecture-middle {
+        padding: 0 !important;
+        width: 100%;
+    }
+}
